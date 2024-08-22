@@ -79,6 +79,7 @@
                 <select id="course_duration" name="course_duration" class="form-control">
                     <option value="TWO YEARS">TWO YEARS</option>
                     <option value="ONE YEAR">ONE YEAR</option>
+                    <option value="ONE YEAR">SIX MONTHS</option>
                 </select>
             </div>
 
@@ -177,10 +178,15 @@ function generateTableCode() {
                 <th>Subject</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody>`;
+
+    // Add "I YEAR" header if course duration is not "ONE YEAR" or "SIX MONTHS"
+    if (courseDuration !== 'ONE YEAR' && courseDuration !== 'SIX MONTHS') {
+        tableCode += `
             <tr class="header">
                 <td colspan="3">I YEAR</td>
             </tr>`;
+    }
 
     let currentIndex = 1;
 
@@ -231,11 +237,49 @@ function generateTableCode() {
     copyToClipboard(tableCode);
 }
 
+
 // Add fade-out effect on page load
 document.addEventListener('DOMContentLoaded', () => {
     const generatedCodeElement = document.getElementById('generatedCode');
     generatedCodeElement.classList.add('fade-out');
 });
+</script>
+<script>
+    // Function to process the input text and extract subjects
+    function extractSubjects(textareaId) {
+        // Get the input value from the specified textarea
+        const textarea = document.getElementById(textareaId);
+        const input = textarea.value;
+        
+        // Split the input text into lines
+        const lines = input.split('\n');
+        
+        // Initialize an array to hold the subjects
+        const subjects = [];
+        
+        // Iterate over each line
+        lines.forEach(line => {
+            // Split the line into parts by whitespace or tab
+            const parts = line.split(/\s+/);
+            
+            // If the line has more than 2 parts, the subject name is in the remaining parts
+            if (parts.length > 2) {
+                // Join the remaining parts to form the subject name
+                const subject = parts.slice(2).join(' ');
+                subjects.push(subject);
+            }
+        });
+        
+        // Join the subjects array into a single string with newline separators
+        const output = subjects.join('\n');
+        
+        // Display the result in the specified textarea
+        textarea.value = output;
+    }
+
+    // Add event listeners to both textareas
+    document.getElementById('subjects').addEventListener('input', () => extractSubjects('subjects'));
+    document.getElementById('subjects2').addEventListener('input', () => extractSubjects('subjects2'));
 </script>
 </body>
 </html>
