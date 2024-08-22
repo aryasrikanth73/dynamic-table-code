@@ -125,44 +125,45 @@
 
 <script>
     function updateText() {
-        const textarea = document.getElementById('link');
-        const input = textarea.value.trim();
-        
-        if (!input) return;
+    const textarea = document.getElementById('link');
+    const input = textarea.value.trim();
+    
+    if (!input) return;
 
-        // Convert input text to URL-friendly format
-        const slug = input.toLowerCase().replace(/ /g, '-').replace(/[^\w-]/g, '');
+    // Convert input text to URL-friendly format
+    const slug = input.toLowerCase().replace(/ /g, '-').replace(/[^\w-]/g, '');
 
-        // Generate the formatted text
-        const formattedText = `<a href="http://srvti.in/${slug}/" class="popmake-${Math.floor(Math.random() * 1000) + 1}" style="color: red; font-weight: bolder;" data-mce-style="color: red; font-weight: bolder;">${input}</a>`;
+    // Generate the formatted text
+    const formattedText = `<a href="http://srvti.in/${slug}/" class="popmake-${Math.floor(Math.random() * 1000) + 1}" style="color: red; font-weight: bolder;" data-mce-style="color: red; font-weight: bolder;">${input}</a>`;
 
-        // Update the textarea with the formatted text
-        textarea.value = formattedText;
+    // Update the textarea with the formatted text
+    textarea.value = formattedText;
 
-        // Automatically copy the text to clipboard
-        navigator.clipboard.writeText(formattedText).then(() => {
-            console.log('Text copied to clipboard');
-        }).catch(err => {
-            console.error('Failed to copy text: ', err);
-        });
-    }
+    // Automatically copy the text to clipboard
+    navigator.clipboard.writeText(formattedText).then(() => {
+        console.log('Text copied to clipboard');
+    }).catch(err => {
+        console.error('Failed to copy text: ', err);
+    });
+}
 
-    function copyToClipboard(text) {
-        navigator.clipboard.writeText(text).then(() => {
-            alert('Table code copied to clipboard!');
-        }).catch(err => {
-            console.error('Failed to copy text: ', err);
-        });
-    }
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        // Removed alert message
+        console.log('Table code copied to clipboard!');
+    }).catch(err => {
+        console.error('Failed to copy text: ', err);
+    });
+}
 
-    function generateTableCode() {
-        const courseName = document.getElementById('course_name').value;
-        const courseCode = document.getElementById('course_code').value;
-        const courseDuration = document.getElementById('course_duration').value;
-        const subjectsYear1 = document.getElementById('subjects').value.split('\n');
-        const subjectsYear2 = document.getElementById('subjects2').value.split('\n');
+function generateTableCode() {
+    const courseName = document.getElementById('course_name').value;
+    const courseCode = document.getElementById('course_code').value;
+    const courseDuration = document.getElementById('course_duration').value;
+    const subjectsYear1 = document.getElementById('subjects').value.split('\n');
+    const subjectsYear2 = document.getElementById('subjects2').value.split('\n');
 
-        let tableCode = `
+    let tableCode = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -221,104 +222,110 @@
         </thead>
         <tbody>`;
 
-        // Add "I YEAR" header if course duration is not "ONE YEAR" or "SIX MONTHS"
-        if (courseDuration !== 'ONE YEAR' && courseDuration !== 'SIX MONTHS') {
+    // Add "I YEAR" header if course duration is not "ONE YEAR" or "SIX MONTHS"
+    if (courseDuration !== 'ONE YEAR' && courseDuration !== 'SIX MONTHS') {
+        tableCode += `
+        <tr class="header">
+            <td colspan="3">I YEAR</td>
+        </tr>`;
+    }
+
+    let currentIndex = 1;
+
+    subjectsYear1.forEach((subject) => {
+        if (subject.trim() !== "") {
             tableCode += `
-            <tr class="header">
-                <td colspan="3">I YEAR</td>
-            </tr>`;
+    <tr>
+        <td>${currentIndex}</td>
+        <td>${courseCode}-${currentIndex}</td>
+        <td>${subject}</td>
+    </tr>`;
+            currentIndex++;
         }
+    });
 
-        let currentIndex = 1;
-
-        subjectsYear1.forEach((subject) => {
+    if (subjectsYear2.some(subject => subject.trim() !== "")) {
+        tableCode += `
+        <tr class="header">
+            <td colspan="3">II YEAR</td>
+        </tr>`;
+        
+        subjectsYear2.forEach((subject) => {
             if (subject.trim() !== "") {
                 tableCode += `
-        <tr>
-            <td>${currentIndex}</td>
-            <td>${courseCode}-${currentIndex}</td>
-            <td>${subject}</td>
-        </tr>`;
+    <tr>
+        <td>${currentIndex}</td>
+        <td>${courseCode}-${currentIndex}</td>
+        <td>${subject}</td>
+    </tr>`;
                 currentIndex++;
             }
         });
+    }
 
-        if (subjectsYear2.some(subject => subject.trim() !== "")) {
-            tableCode += `
-            <tr class="header">
-                <td colspan="3">II YEAR</td>
-            </tr>`;
-            
-            subjectsYear2.forEach((subject) => {
-                if (subject.trim() !== "") {
-                    tableCode += `
-        <tr>
-            <td>${currentIndex}</td>
-            <td>${courseCode}-${currentIndex}</td>
-            <td>${subject}</td>
-        </tr>`;
-                    currentIndex++;
-                }
-            });
-        }
-
-        tableCode += `
+    tableCode += `
         </tbody>
     </table>
 </body>
 </html>`;
 
-        // Output the generated table code with fade-in animation
-        const generatedCodeElement = document.getElementById('generatedCode');
-        generatedCodeElement.textContent = tableCode;
-        generatedCodeElement.classList.remove('fade-out');
-        generatedCodeElement.classList.add('fade-in');
-        
-        // Copy the generated table code to clipboard
-        copyToClipboard(tableCode);
-    }
+    // Output the generated table code with fade-in animation
+    const generatedCodeElement = document.getElementById('generatedCode');
+    generatedCodeElement.textContent = tableCode;
+    generatedCodeElement.classList.remove('fade-out');
+    generatedCodeElement.classList.add('fade-in');
+    
+    // Copy the generated table code to clipboard
+    copyToClipboard(tableCode);
+    
+    // Reload the page after one minute
+    setTimeout(() => {
+        window.location.reload();
+    }, 5000); // 60,000 milliseconds = 1 minute
+}
 
-    // Add fade-out effect on page load
-    document.addEventListener('DOMContentLoaded', () => {
-        const generatedCodeElement = document.getElementById('generatedCode');
-        generatedCodeElement.classList.add('fade-out');
+// Add fade-out effect on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const generatedCodeElement = document.getElementById('generatedCode');
+    generatedCodeElement.classList.add('fade-out');
+});
+
+// Function to process the input text and extract subjects
+function extractSubjects(textareaId) {
+    // Get the input value from the specified textarea
+    const textarea = document.getElementById(textareaId);
+    const input = textarea.value;
+    
+    // Split the input text into lines
+    const lines = input.split('\n');
+    
+    // Initialize an array to hold the subjects
+    const subjects = [];
+    
+    // Iterate over each line
+    lines.forEach(line => {
+        // Split the line into parts by whitespace or tab
+        const parts = line.split(/\s+/);
+        
+        // If the line has more than 2 parts, the subject name is in the remaining parts
+        if (parts.length > 2) {
+            // Join the remaining parts to form the subject name
+            const subject = parts.slice(2).join(' ');
+            subjects.push(subject);
+        }
     });
+    
+    // Join the subjects array into a single string with newline separators
+    const output = subjects.join('\n');
+    
+    // Display the result in the specified textarea
+    textarea.value = output;
+}
 
-    // Function to process the input text and extract subjects
-    function extractSubjects(textareaId) {
-        // Get the input value from the specified textarea
-        const textarea = document.getElementById(textareaId);
-        const input = textarea.value;
-        
-        // Split the input text into lines
-        const lines = input.split('\n');
-        
-        // Initialize an array to hold the subjects
-        const subjects = [];
-        
-        // Iterate over each line
-        lines.forEach(line => {
-            // Split the line into parts by whitespace or tab
-            const parts = line.split(/\s+/);
-            
-            // If the line has more than 2 parts, the subject name is in the remaining parts
-            if (parts.length > 2) {
-                // Join the remaining parts to form the subject name
-                const subject = parts.slice(2).join(' ');
-                subjects.push(subject);
-            }
-        });
-        
-        // Join the subjects array into a single string with newline separators
-        const output = subjects.join('\n');
-        
-        // Display the result in the specified textarea
-        textarea.value = output;
-    }
+// Add event listeners to both textareas
+document.getElementById('subjects').addEventListener('input', () => extractSubjects('subjects'));
+document.getElementById('subjects2').addEventListener('input', () => extractSubjects('subjects2'));
 
-    // Add event listeners to both textareas
-    document.getElementById('subjects').addEventListener('input', () => extractSubjects('subjects'));
-    document.getElementById('subjects2').addEventListener('input', () => extractSubjects('subjects2'));
 </script>
 </body>
 </html>
