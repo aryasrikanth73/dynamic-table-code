@@ -224,7 +224,7 @@ function generateTableCode() {
         <tbody>`;
 
     // Add "I YEAR" header if course duration is not "ONE YEAR" or "SIX MONTHS"
-    if (courseDuration !== 'ONE YEAR' && courseDuration !== 'SIX MONTHS') {
+    if (courseDuration !== 'ONE YEAR' && courseDuration !== 'SIX MONTHS' && courseDuration !== 'ONE MONTH') {
         tableCode += `
         <tr class="header">
             <td colspan="3">I YEAR</td>
