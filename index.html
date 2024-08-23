@@ -97,7 +97,6 @@
                     <option value="TWO YEARS">TWO YEARS</option>
                     <option value="ONE YEAR">ONE YEAR</option>
                     <option value="SIX MONTHS">SIX MONTHS</option>
-                    <option value="ONE MONTH">ONE MONTH</option>
                 </select>
             </div>
 
@@ -126,6 +125,9 @@
 
 <script>
     function updateText() {
+    var linkText = document.getElementById("link").value;
+    document.getElementById("course_name").value = linkText;
+    
     const textarea = document.getElementById('link');
     const input = textarea.value.trim();
     
@@ -224,7 +226,7 @@ function generateTableCode() {
         <tbody>`;
 
     // Add "I YEAR" header if course duration is not "ONE YEAR" or "SIX MONTHS"
-    if (courseDuration !== 'ONE YEAR' && courseDuration !== 'SIX MONTHS' && courseDuration !== 'ONE MONTH') {
+    if (courseDuration !== 'ONE YEAR' && courseDuration !== 'SIX MONTHS') {
         tableCode += `
         <tr class="header">
             <td colspan="3">I YEAR</td>
@@ -282,7 +284,7 @@ function generateTableCode() {
     // Reload the page after one minute
     setTimeout(() => {
         window.location.reload();
-    }, 60000); // 60,000 milliseconds = 1 minute
+    }, 5000); // 60,000 milliseconds = 1 minute
 }
 
 // Add fade-out effect on page load
