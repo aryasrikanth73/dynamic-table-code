@@ -1,181 +1,115 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Generate Table Code</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 1200px;
-            margin: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .form-label {
-            font-weight: bold;
-        }
-        .form-control {
-            border-radius: 4px;
-            border: 1px solid #ced4da;
-            transition: border-color 0.3s ease;
-        }
-        .form-control:focus {
-            border-color: #4CAF50;
-            box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
-        }
-        .btn-primary {
-            background-color: #4CAF50;
-            border: none;
-            transition: background-color 0.3s ease;
-        }
-        .btn-primary:hover {
-            background-color: #45a049;
-        }
-        .output {
-            margin-top: 20px;
-            height: 600px; /* Adjust the height as needed */
-            overflow-y: auto;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            padding: 10px;
-            background: #f8f9fa;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        #generatedCode {
-            white-space: pre-wrap;
-            background: #333;
-            color: #f8f9fa;
-            padding: 10px;
-            border-radius: 4px;
-        }
-        #link {
-            border-radius: 4px;
-            border: 1px solid #ced4da;
-            padding: 10px;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            width: 100%;
-            min-height: 100px;
-            resize: vertical; /* Allows vertical resizing only */
-        }
-        #link:focus {
-            border-color: #4CAF50;
-            box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
-        }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f2f5;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        max-width: 1200px;
+        margin: auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .output {
+        margin-top: 20px;
+        height: 500px;
+        overflow-y: auto;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        padding: 10px;
+        background: #f8f9fa;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      #generatedCode {
+        white-space: pre-wrap;
+        background: #333;
+        color: #f8f9fa;
+        padding: 10px;
+        border-radius: 4px;
+      }
+      textarea {
+        width: 100%;
+        height: 98%;
+        border-radius: 4px;
+        padding: 10px;
+        border: 1px solid #ced4da;
+      }
+      textarea:focus {
+        border-color: #4caf50;
+        box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+      }
     </style>
-</head>
-<body>
-
-<div class="container">
-    <h2 class="text-center mb-4">Dynamic Generate Table Code</h2>
-    <div class="row mt-4">
-        <div class="col-12">
-            <textarea id="link" placeholder="Paste Heading here U will copy the wordpress link automatically" oninput="updateText()"></textarea>
-        </div>
-    </div>
-    <div class="row">
+  </head>
+  <body>
+    <div class="container">
+      <h2 class="text-center mb-4">Dynamic Generate Table Code</h2>
+      <div class="row">
         <div class="col-md-6">
-            <div class="mb-3">
-                <label for="course_code" class="form-label">Course Code:</label>
-                <input type="text" id="course_code" name="course_code" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="course_name" class="form-label">Course Name:</label>
-                <input type="text" id="course_name" name="course_name" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="course_duration" class="form-label">Course Duration:</label>
-                <select id="course_duration" name="course_duration" class="form-control">
-                    <option value="TWO YEARS">TWO YEARS</option>
-                    <option value="ONE YEAR">ONE YEAR</option>
-                    <option value="SIX MONTHS">SIX MONTHS</option>
-                    <option value="THREE MONTHS">THREE MONTHS</option>
-                    <option value="ONE MONTH">ONE MONTH</option>
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label for="subjects" class="form-label">Year-1:</label>
-                <textarea id="subjects" name="subjects" class="form-control" rows="5"></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="subjects2" class="form-label">Year-2:</label>
-                <textarea id="subjects2" name="subjects2" class="form-control" rows="5"></textarea>
-            </div>
-            <button type="button" class="btn btn-primary" onclick="generateTableCode()">Generate Table Code</button>
+          <div class="output">
+            <textarea
+              id="inputData"
+              placeholder="Paste data here..."
+            ></textarea>
+          </div>
         </div>
         <div class="col-md-6">
-            <div class="output">
-                <pre id="generatedCode">
-                    <br><br><br><br><br><br><br><br><br>
-                    <center><h1>PPFW WEB DEVELOPERS</h1></center>
-                    <br><br><br><br><br><br><br><br><br>
-                </pre>
-            </div>
+          <div class="output">
+            <pre id="generatedCode"><br><br><br><br><br><br><br><br><br><center><h1> PPFW WEB DEVELOPERS</h1></center><br><br><br><br><br><br><br><br><br><br></pre>
+          </div>
         </div>
+      </div>
     </div>
-    
-</div>
 
-<script>
-    function updateText() {
-    var linkText = document.getElementById("link").value;
-    document.getElementById("course_name").value = linkText;
-    
-    const textarea = document.getElementById('link');
-    const input = textarea.value.trim();
-    
-    if (!input) return;
+    <script>
+      document
+        .getElementById("inputData")
+        .addEventListener("input", function () {
+          const data = this.value.split("\n");
+          if (data.length < 4) return; // Ensure there are enough lines
 
-    // Convert input text to URL-friendly format
-    const slug = input.toLowerCase().replace(/ /g, '-').replace(/[^\w-]/g, '');
+          const courseCode = data[0].split(": ")[1]?.trim() || "";
+          const courseDuration = data[4].split(": ")[1]?.trim() || "";
+          const courseName = data[2].split(": ")[1]?.trim() || "";
+          let tableRows = "";
+          let currentYear = "";
 
-    // Generate the formatted text
-    const formattedText = `<a href="http://srvti.in/${slug}/" class="popmake-${Math.floor(Math.random() * 1000) + 1}" style="color: red; font-weight: bolder;" data-mce-style="color: red; font-weight: bolder;">${input}</a>`;
+          for (let i = 5; i < data.length; i++) {
+            if (data[i].trim()) {
+              if (data[i].trim() === "I YEAR" || data[i].trim() === "II YEAR") {
+                currentYear = data[i].trim();
+                tableRows += `<tr class="header"><td colspan="3">${currentYear}</td></tr>`;
+                continue;
+              }
 
-    // Update the textarea with the formatted text
-    textarea.value = formattedText;
+              // Skip the header line "SNo	Subject Code	Subject"
+              if (i === 5 && data[5].trim().startsWith("SNo")) continue;
 
-    // Automatically copy the text to clipboard
-    navigator.clipboard.writeText(formattedText).then(() => {
-        console.log('Text copied to clipboard');
-    }).catch(err => {
-        console.error('Failed to copy text: ', err);
-    });
-}
+              const parts = data[i].split("\t");
+              if (parts.length >= 3) {
+                
+  tableRows += `<tr>
+                    <td>${parts[0].trim()}</td>
+                    <td>${parts[1].trim()}</td>
+                    <td>${parts[2].trim()}</td>
+                </tr>`;
+              }
+            }
+          }
 
-function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(() => {
-        // Removed alert message
-        console.log('Table code copied to clipboard!');
-    }).catch(err => {
-        console.error('Failed to copy text: ', err);
-    });
-}
-
-function generateTableCode() {
-    const courseName = document.getElementById('course_name').value;
-    const courseCode = document.getElementById('course_code').value;
-    const courseDuration = document.getElementById('course_duration').value;
-    const subjectsYear1 = document.getElementById('subjects').value.split('\n');
-    const subjectsYear2 = document.getElementById('subjects2').value.split('\n');
-
-    let tableCode = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${courseName} - Subjects</title>
+          const output = `
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -211,13 +145,9 @@ function generateTableCode() {
             color: red;
         }
     </style>
-</head>
-<body>
-    
     <h6>COURSE NAME: <span>${courseName}</span></h6>
     <h6>COURSE CODE: <span>${courseCode}</span></h6>
     <h6>COURSE DURATION: <span>${courseDuration}</span></h6>
-
     <table>
         <thead>
             <tr>
@@ -226,112 +156,26 @@ function generateTableCode() {
                 <th>Subject</th>
             </tr>
         </thead>
-        <tbody>`;
-
-    // Add "I YEAR" header if course duration is not "ONE YEAR" or "SIX MONTHS"
-    if (courseDuration !== 'ONE YEAR' && courseDuration !== 'SIX MONTHS' && courseDuration !== 'THREE MONTHS' && courseDuration !== 'ONE MONTH') {
-        tableCode += `
-        <tr class="header">
-            <td colspan="3">I YEAR</td>
-        </tr>`;
-    }
-
-    let currentIndex = 1;
-
-    subjectsYear1.forEach((subject) => {
-        if (subject.trim() !== "") {
-            tableCode += `
-    <tr>
-        <td>${currentIndex}</td>
-        <td>${courseCode}-${currentIndex}</td>
-        <td>${subject}</td>
-    </tr>`;
-            currentIndex++;
-        }
-    });
-
-    if (subjectsYear2.some(subject => subject.trim() !== "")) {
-        tableCode += `
-        <tr class="header">
-            <td colspan="3">II YEAR</td>
-        </tr>`;
-        
-        subjectsYear2.forEach((subject) => {
-            if (subject.trim() !== "") {
-                tableCode += `
-    <tr>
-        <td>${currentIndex}</td>
-        <td>${courseCode}-${currentIndex}</td>
-        <td>${subject}</td>
-    </tr>`;
-                currentIndex++;
-            }
-        });
-    }
-
-    tableCode += `
+        <tbody>
+            ${tableRows}
         </tbody>
-    </table>
-</body>
-</html>`;
+    </table>`;
 
-    // Output the generated table code with fade-in animation
-    const generatedCodeElement = document.getElementById('generatedCode');
-    generatedCodeElement.textContent = tableCode;
-    generatedCodeElement.classList.remove('fade-out');
-    generatedCodeElement.classList.add('fade-in');
-    
-    // Copy the generated table code to clipboard
-    copyToClipboard(tableCode);
-    
-    // Reload the page after one minute
-    setTimeout(() => {
-        window.location.reload();
-    }, 60000); // 60,000 milliseconds = 1 minute
-}
-
-// Add fade-out effect on page load
-document.addEventListener('DOMContentLoaded', () => {
-    const generatedCodeElement = document.getElementById('generatedCode');
-    generatedCodeElement.classList.add('fade-out');
-});
-
-// Function to process the input text and extract subjects
-function extractSubjects(textareaId) {
-    // Get the input value from the specified textarea
-    const textarea = document.getElementById(textareaId);
-    const input = textarea.value;
-    
-    // Split the input text into lines
-    const lines = input.split('\n');
-    
-    // Initialize an array to hold the subjects
-    const subjects = [];
-    
-    // Iterate over each line
-    lines.forEach(line => {
-        // Split the line into parts by whitespace or tab
-        const parts = line.split(/\s+/);
-        
-        // If the line has more than 2 parts, the subject name is in the remaining parts
-        if (parts.length > 2) {
-            // Join the remaining parts to form the subject name
-            const subject = parts.slice(2).join(' ');
-            subjects.push(subject);
-        }
-    });
-    
-    // Join the subjects array into a single string with newline separators
-    const output = subjects.join('\n');
-    
-    // Display the result in the specified textarea
-    textarea.value = output;
-}
-
-// Add event listeners to both textareas
-document.getElementById('subjects').addEventListener('input', () => extractSubjects('subjects'));
-document.getElementById('subjects2').addEventListener('input', () => extractSubjects('subjects2'));
-
-</script>
-</body>
+          document.getElementById("generatedCode").textContent = output;
+          // Copy the generated output to clipboard
+          navigator.clipboard
+            .writeText(output)
+            .then(() => {
+              console.log("Output copied to clipboard");
+            })
+            .catch((err) => {
+              console.error("Could not copy text: ", err);
+            });
+          // Select all text in the textarea
+          setTimeout(() => {
+            this.select();
+          }, 0);
+        });
+    </script>
+  </body>
 </html>
